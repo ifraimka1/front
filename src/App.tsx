@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import FileUpload from "./components/FileUpload";
+import FileUpload from "./components/FilesUpload";
 
 const App: React.FC = () => {
   return (

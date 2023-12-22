@@ -1,6 +1,6 @@
 import http from "../http-common";
 
-const upload = (file: File, onUploadProgress: any): Promise<any> => {
+const upload = (file: File, onUploadProgress: (progressEvent: any) => void): Promise<any> => {
   let formData = new FormData();
 
   formData.append("file", file);
