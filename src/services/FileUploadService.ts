@@ -5,7 +5,7 @@ const upload = (file: File, onUploadProgress: (progressEvent: any) => void): Pro
 
   formData.append("file", file);
 
-  return http.post("/api/file-upload", formData, {
+  return http.post("/api/file_upload", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -13,13 +13,8 @@ const upload = (file: File, onUploadProgress: (progressEvent: any) => void): Pro
   });
 };
 
-const getFiles = () : Promise<any> => {
-  return http.get("/files");
-};
-
 const FileUploadService = {
-  upload,
-  getFiles,
+  upload
 };
 
 export default FileUploadService;
