@@ -69,15 +69,17 @@ const FilesUpload: React.FC = () => {
 
       progressInfosRef.current = _progressInfos;
 
-      //const uploadPromises = files.map((file, i) => upload(i, file));
+      const uploadPromises = files.map((file, i) => upload(i, file));
 
-      // Promise.all(uploadPromises)
-      //   //.then(() => UploadService.getFiles())
+      console.log(uploadPromises);
+
+      Promise.all(uploadPromises)
+      //   .then(() => UploadService.getFiles())
       //   .then((files) => {
       //     setFileInfos(files.data);
       //   });
 
-      setMessage([]);
+      // setMessage([]);
     }
   };
 

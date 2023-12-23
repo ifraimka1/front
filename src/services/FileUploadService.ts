@@ -13,8 +13,13 @@ const upload = (file: File, onUploadProgress: (progressEvent: any) => void): Pro
   });
 };
 
+// const getFiles = () : Promise<any> => {
+//   return http.get("/files");
+// };
+
 const FileUploadService = {
-  upload
+  upload,
+//  getFiles,
 };
 
 export default FileUploadService;
