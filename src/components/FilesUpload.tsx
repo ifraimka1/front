@@ -151,7 +151,7 @@ const FilesUpload: React.FC = () => {
         <h2>Очистите ваш документ от персональных данных.</h2>
         <label className="btn btn-default file-select" >
           Выбрать файл
-          <input type="file" accept=".doc,.docx,.pdf,.xml,.jpeg,.jpg,.png" multiple onChange={selectFiles} />
+          <input type="file" accept=".xlsx,.docx,.pdf,.jpeg,.jpg,.png" multiple onChange={selectFiles} />
         </label>
       </div>
     );
