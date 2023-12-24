@@ -14,13 +14,8 @@ const FilesUpload: React.FC = () => {
   const [progressInfos, setProgressInfos] = useState<Array<ProgressInfo>>([]);
   const [message, setMessage] = useState<Array<string>>([]);
   const [fileInfos, setFileInfos] = useState<Array<IFile>>([]);
+  const [links, setLinks] = useState<Map<number, string>>(new Map());
   const progressInfosRef = useRef<any>(null);
-
-  // useEffect(() => {
-  //   UploadService.getFiles().then((response) => {
-  //     setFileInfos(response.data);
-  //   });
-  // }, []);
 
   const selectFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFiles(event.target.files);
@@ -36,7 +31,17 @@ const FilesUpload: React.FC = () => {
       );
       setProgressInfos(_progressInfos);
     })
-      .then(() => {
+      .then((response) => {
+        const newFileInfo: IFile = {
+          id: response.data.id,
+          name: file.name,
+        }
+        const newFileInfos = fileInfos;
+        newFileInfos.push(newFileInfo);
+        setFileInfos(newFileInfos);
+
+        getLink(response.data.id);
+
         setMessage((prevMessage) => [
           ...prevMessage,
           file.name + ": Successful!"
@@ -71,10 +76,10 @@ const FilesUpload: React.FC = () => {
 
       const uploadPromises = files.map((file, i) => upload(i, file));
 
-      console.log(uploadPromises);
-
       Promise.all(uploadPromises)
-      //   .then(() => UploadService.getFiles())
+        .then(() => {
+          //setFileLinks(UploadService.getFileLinks());
+        });
       //   .then((files) => {
       //     setFileInfos(files.data);
       //   });
@@ -82,6 +87,19 @@ const FilesUpload: React.FC = () => {
       // setMessage([]);
     }
   };
+
+  const getLink = async (id: number) => {
+    let href = "";
+    await UploadService.getLink(id)
+      .then((response) => {
+        href = URL.createObjectURL(response.data);
+        console.log(href);
+        const newLinks = links;
+        newLinks.set(id, href);
+        setLinks(new Map(links).set(id, href));
+        console.log(links);
+      });
+  }
 
   const calculateSize = (size: number) => {
     let bytes = [
@@ -209,7 +227,7 @@ const FilesUpload: React.FC = () => {
 
       <div className="card">
         <div className="card-header">
-          {fileInfos ? (
+          {fileInfos && fileInfos.length === 0 ? (
             <p>Загруженные файлы отобразятся здесь</p>
           ) : (
             <p>Загруженные файлы</p>
@@ -217,9 +235,13 @@ const FilesUpload: React.FC = () => {
         </div>
         <ul className="list-group list-group-flush">
           {fileInfos &&
-            fileInfos.map((file, index) => (
-              <li className="list-group-item" key={index}>
-                <a href={file.url}>{file.name}</a>
+            fileInfos.map((file) => (
+              <li className="list-group-item" key={file.id}>
+                {links.has(file.id) ? (
+                  <a target="_blank" rel='noreferrer' href={links.get(file.id)}>{file.name}</a>
+                ) : (
+                  <span>{file.name} (ссылка еще не доступна)</span>
+                )}
               </li>
             ))}
         </ul>

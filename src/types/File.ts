@@ -1,4 +1,4 @@
 export default interface IFile {
-    url: string,
+    id: number,
     name: string,
 }
